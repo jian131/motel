@@ -38,7 +38,45 @@ loginForm.addEventListener('submit', e => {
 
 });
 
-// Xử lý sự kiện submit form đăng ký
-registerForm.addEventListener('submit', e => {
-  // Code xử lý đăng ký
+// Xử lý sự kiện submit form
+registerForm.addEventListener('submit', async e => {
+
+  e.preventDefault();
+
+  // Lấy dữ liệu từ form
+  const name = registerForm.name.value;
+  const email = registerForm.email.value; 
+  const password = registerForm.password.value;
+
+  // Gọi API đăng ký người dùng
+  const response = await callAPI('/register', {
+    name,
+    email,
+    password
+  });
+
+  if(response.ok) {
+    // Đăng ký thành công
+    alert('Đăng ký thành công');
+    window.location.href = '/';
+  } else {
+    // Đăng ký thất bại
+    alert('Đăng ký thất bại');
+  }
+
 });
+
+// Hàm gọi API
+async function callAPI(endpoint, data) {
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) 
+  });
+
+  return response;
+
+}
